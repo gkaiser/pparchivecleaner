@@ -17,12 +17,13 @@ namespace PPArchiveCleaner
 		private int _olderThan = 0, _totCt = 0, _cleanCt = 0;
 		private List<string> _lstExtensionsToInclude = new List<string>(new string[] { ".dat", ".tmp", ".txt" });
 
-		public FrmCleaning(string BaseDir, int OlderThan)
+		public FrmCleaning(string BaseDir, int OlderThan, List<string> includedExtensions)
 		{
 			InitializeComponent();
 
 			_baseDir = BaseDir;
 			_olderThan = OlderThan;
+			_lstExtensionsToInclude = includedExtensions;
 		}
 
 		private void FrmCleaning_Load(object sender, EventArgs e)

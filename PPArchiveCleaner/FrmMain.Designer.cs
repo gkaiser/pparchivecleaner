@@ -35,6 +35,8 @@
 			this.btClean = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
 			this.nudOlderThan = new System.Windows.Forms.NumericUpDown();
+			this.label3 = new System.Windows.Forms.Label();
+			this.txtExtensions = new System.Windows.Forms.TextBox();
 			((System.ComponentModel.ISupportInitialize)(this.nudOlderThan)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -67,7 +69,7 @@
 			// 
 			// btClean
 			// 
-			this.btClean.Location = new System.Drawing.Point(148, 67);
+			this.btClean.Location = new System.Drawing.Point(148, 90);
 			this.btClean.Name = "btClean";
 			this.btClean.Size = new System.Drawing.Size(75, 23);
 			this.btClean.TabIndex = 3;
@@ -108,11 +110,30 @@
             0,
             0});
 			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(17, 67);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(108, 13);
+			this.label3.TabIndex = 6;
+			this.label3.Text = "Extensions to Include";
+			// 
+			// txtExtensions
+			// 
+			this.txtExtensions.Location = new System.Drawing.Point(125, 64);
+			this.txtExtensions.Name = "txtExtensions";
+			this.txtExtensions.Size = new System.Drawing.Size(239, 20);
+			this.txtExtensions.TabIndex = 7;
+			this.txtExtensions.Text = ".dat .tmp .txt";
+			// 
 			// FrmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(370, 96);
+			this.ClientSize = new System.Drawing.Size(370, 119);
+			this.Controls.Add(this.txtExtensions);
+			this.Controls.Add(this.label3);
 			this.Controls.Add(this.nudOlderThan);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.btClean);
@@ -140,6 +161,8 @@
 		private System.Windows.Forms.Button btClean;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.NumericUpDown nudOlderThan;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.TextBox txtExtensions;
 	}
 }
 

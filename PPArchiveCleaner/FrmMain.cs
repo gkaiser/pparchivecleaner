@@ -27,7 +27,10 @@ namespace PPArchiveCleaner
 
 		private void btClean_Click(object sender, EventArgs e)
 		{
-			FrmCleaning frmClean = new FrmCleaning(txtBase.Text, Convert.ToInt32(nudOlderThan.Value));
+			FrmCleaning frmClean = new FrmCleaning(
+				txtBase.Text, 
+				Convert.ToInt32(nudOlderThan.Value), 
+				new List<string>(txtExtensions.Text.Split(' ')));
 
 			frmClean.ShowDialog(this);
 		}
