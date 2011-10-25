@@ -15,6 +15,7 @@ namespace PPArchiveCleaner
 	{
 		private string _baseDir;
 		private int _olderThan = 0, _totCt = 0, _cleanCt = 0;
+		private List<string> _lstExtensionsToInclude = new List<string>(new string[] { ".dat", ".tmp", ".txt" });
 
 		public FrmCleaning(string BaseDir, int OlderThan)
 		{
@@ -48,7 +49,7 @@ namespace PPArchiveCleaner
 				this.Invoke((MethodInvoker) delegate() { lblCurrFolder.Text = "Cleaning " + Path.GetDirectoryName(dataDir); });
 
 				Directory.SetCurrentDirectory(dataDir);
-				string[] dataFiles = Directory.GetFiles(dataDir, "*.dat");
+				string[] dataFiles = Directory.GetFiles(dataDir);
 				string tarFile = Path.Combine(dataDir, DateTime.Today.ToString("yyyyMMdd") + ".tar");
 				string bzFile = tarFile + ".bz2";
 
@@ -58,6 +59,9 @@ namespace PPArchiveCleaner
 
 				for (int i = 0; i < dataFiles.Length; i++)
 				{
+					if (!_lstExtensionsToInclude.Contains(Path.GetExtension(dataFiles[i]).ToLowerInvariant()))
+						continue;
+
 					fiDatFile = new FileInfo(dataFiles[i]);
 
 					if (fiDatFile.CreationTime < DateTime.Today.AddMonths(-1 * _olderThan))
