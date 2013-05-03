@@ -47,12 +47,13 @@ namespace PPArchiveCleaner
 
 			foreach (string dataDir in dataDirs)
 			{
-				this.Invoke((MethodInvoker) delegate() { lblCurrFolder.Text = "Cleaning " + Path.GetDirectoryName(dataDir); });
+				this.Invoke((MethodInvoker) delegate() { lblCurrFolder.Text = "Cleaning " + dataDir.Substring(dataDir.LastIndexOf(Path.DirectorySeparatorChar) + 1); });
 
 				Directory.SetCurrentDirectory(dataDir);
-				string[] dataFiles = Directory.GetFiles(dataDir);
+				string[] dataFiles = Directory.GetFiles(dataDir, "*", SearchOption.AllDirectories);
 				string tarFile = Path.Combine(dataDir, DateTime.Today.ToString("yyyyMMdd") + ".tar");
 				string bzFile = tarFile + ".bz2";
+				string fileExt = "";
 
 				_totCt += dataFiles.Length;
 				sTar = new FileStream(tarFile, FileMode.Create, FileAccess.ReadWrite);
@@ -60,7 +61,9 @@ namespace PPArchiveCleaner
 
 				for (int i = 0; i < dataFiles.Length; i++)
 				{
-					if (!_lstExtensionsToInclude.Contains(Path.GetExtension(dataFiles[i]).ToLowerInvariant()))
+					fileExt = Path.GetExtension(dataFiles[i]).ToLowerInvariant();
+
+					if (!string.IsNullOrEmpty(fileExt) && !_lstExtensionsToInclude.Contains(fileExt))
 						continue;
 
 					fiDatFile = new FileInfo(dataFiles[i]);
