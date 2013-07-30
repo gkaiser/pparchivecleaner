@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
+using System.ComponentModel;
+using System.Collections.Generic;
+
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.BZip2;
 
@@ -37,7 +35,6 @@ namespace PPArchiveCleaner
 
 		private void bwClean_DoWork(object sender, DoWorkEventArgs e)
 		{
-			FileInfo fiDatFile;
 			TarArchive tArch;
 			Stream sTar = null, sBzip = null;
 
@@ -47,13 +44,16 @@ namespace PPArchiveCleaner
 
 			foreach (string dataDir in dataDirs)
 			{
-				this.Invoke((MethodInvoker) delegate() { lblCurrFolder.Text = "Cleaning " + dataDir.Substring(dataDir.LastIndexOf(Path.DirectorySeparatorChar) + 1); });
+        string fileDataType = dataDir.Substring(dataDir.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+
+				this.Invoke((MethodInvoker)delegate() { lblCurrFolder.Text = "Cleaning " + fileDataType; });
 
 				Directory.SetCurrentDirectory(dataDir);
-				string[] dataFiles = Directory.GetFiles(dataDir, "*", SearchOption.AllDirectories);
+        string[] dataFiles = Directory.GetFiles(dataDir, "*", SearchOption.AllDirectories);
 				string tarFile = Path.Combine(dataDir, DateTime.Today.ToString("yyyyMMdd") + ".tar");
 				string bzFile = tarFile + ".bz2";
 				string fileExt = "";
+        FileInfo fiDatFile = null;
 
 				_totCt += dataFiles.Length;
 				sTar = new FileStream(tarFile, FileMode.Create, FileAccess.ReadWrite);
@@ -63,7 +63,7 @@ namespace PPArchiveCleaner
 				{
 					fileExt = Path.GetExtension(dataFiles[i]).ToLowerInvariant();
 
-					if (!string.IsNullOrEmpty(fileExt) && !_lstExtensionsToInclude.Contains(fileExt))
+					if (string.IsNullOrEmpty(fileExt) || !_lstExtensionsToInclude.Contains(fileExt))
 						continue;
 
 					fiDatFile = new FileInfo(dataFiles[i]);
@@ -82,7 +82,7 @@ namespace PPArchiveCleaner
 					this.Invoke((MethodInvoker)
 						delegate() 
 						{
-							lblCurrFiles.Text = "Cleaning... (" + i.ToString() + " of " + dataFiles.Length.ToString() + ")";
+							lblCurrFiles.Text = "Cleaning file " + i.ToString() + " of " + dataFiles.Length.ToString() + "...";
 							prgCurrFolder.Value = this.GetPercent(i, dataFiles.Length); 
 							Application.DoEvents(); 
 						});
@@ -100,6 +100,7 @@ namespace PPArchiveCleaner
 
 				BZip2.Compress(sTar, sBzip, true, 4096);
 				File.Delete(tarFile);
+        File.Move(bzFile, Path.Combine(_baseDir, fileDataType + "-" + Path.GetFileName(bzFile))); 
 
 				this.Invoke((MethodInvoker)
 					delegate()
