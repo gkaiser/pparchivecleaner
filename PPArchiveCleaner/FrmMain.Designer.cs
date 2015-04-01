@@ -47,6 +47,7 @@
       this.txtBase.ReadOnly = true;
       this.txtBase.Size = new System.Drawing.Size(210, 20);
       this.txtBase.TabIndex = 0;
+      this.txtBase.TabStop = false;
       // 
       // btBrowse
       // 
